@@ -62,27 +62,37 @@
 
 void main(void){
     int PWMcycle = 200;
-    initDCmotorsPWM(PWMcycle);
-    struct DC_motor mL,mR;
+    initDCmotorsPWM();
+
+    struct DC_motor motor_Left;
+    struct DC_motor motor_Right;
+    struct DC_motor *mL;
+    struct DC_motor *mR;
+    mL = &motor_Left;
+    mR = &motor_Right;
 
     //struct DC_motor *mL,*mR;
    // mL=&motor_Left;
     //mR=&motor_Right;   
     
-    mL.power=0; 						//zero power to start
-    mL.direction=1; 					//set default motor direction
-    mL.dutyHighByte=(unsigned char *)(&PWM6DCH);	//store address of PWM duty high byte
-    mL.dir_LAT=(unsigned char *)(&LATE); 		//store address of LAT
-    mL.dir_pin=4; 						//pin RE4 controls direction
-    mL.PWMperiod=PWMcycle; 			//store PWMperiod for motor
+    mL->power=0; 						//zero power to start
+    mL->direction=1; 					//set default motor direction
+    mL->dutyHighByte=(unsigned char *)(&PWM6DCH);	//store address of PWM duty high byte
+    mL->dir_LAT=(unsigned char *)(&LATE); 		//store address of LAT
+    mL->dir_pin=4; 						//pin RE4 controls direction
+    mL->PWMperiod=PWMcycle; 			//store PWMperiod for motor
 
     //same for motorR but different PWM register, LAT and direction pin
-    mR.power=0; 						//zero power to start
-    mR.direction=1; 					//set default motor direction
-    mR.dutyHighByte=(unsigned char *)(&PWM7DCH);	//store address of PWM duty high byte
-    mR.dir_LAT=(unsigned char *)(&LATG); 		//store address of LAT
-    mR.dir_pin=6; 						//pin RG6 controls direction
-    mR.PWMperiod=PWMcycle; 			//store PWMperiod for motor
+    mR->power=0; 						//zero power to start
+    mR->direction=1; 					//set default motor direction
+    mR->dutyHighByte=(unsigned char *)(&PWM7DCH);	//store address of PWM duty high byte
+    mR->dir_LAT=(unsigned char *)(&LATG); 		//store address of LAT
+    mR->dir_pin=6; 						//pin RG6 controls direction
+    mR->PWMperiod=PWMcycle; 			//store PWMperiod for motor
     
-    turnLeft(&mL, &mR);
+    while(1){
+        mL->power=0;
+        mR->power=0; 
+        turnLeft(mL, mR);
+    }
 }
